@@ -210,7 +210,6 @@ public class Main extends TelegramLongPollingBot {
                     row2.add("Mening profilim");
                 }
         }
-
         //---------------------------------------------------------------------------
         keyboardRows.add(row1);
         keyboardRows.add(row2);
