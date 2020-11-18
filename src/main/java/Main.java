@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class Main  extends TelegramLongPollingBot {
+public class Main extends TelegramLongPollingBot {
     /*
     ||=======================================================================================================||
     ||                                  Pizza Dostavka Telegram Bot                                          ||
@@ -28,8 +28,6 @@ public class Main  extends TelegramLongPollingBot {
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
         }
-
-
 
 
     }
@@ -48,7 +46,7 @@ public class Main  extends TelegramLongPollingBot {
         Integer userId = update.getMessage().getFrom().getId();
         String inputOldText = update.toString();
         System.out.println(inputOldText);
-        String[] userData = IsUser.isUser(userId,ismi,fami,uName).split("---");
+        String[] userData = IsUser.isUser(userId, ismi, fami, uName).split("---");
         //-------------------------------------------------------------------------
         SendMessage sendMessage = new SendMessage();
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -61,59 +59,59 @@ public class Main  extends TelegramLongPollingBot {
         KeyboardRow row2 = new KeyboardRow();
 
         //--------------------------------------------------------------------------
-        HashMap<String ,Integer> keyCaseMap = new HashMap<>();
-        keyCaseMap.put("Pizzalar ro'yxati",1);
-        keyCaseMap.put("Mening profilim",2);
-        keyCaseMap.put("Telefon raqam biriktirish",3);
-        keyCaseMap.put("Buyurtma berish",4);
-        keyCaseMap.put("/start",0);
+        HashMap<String, Integer> keyCaseMap = new HashMap<>();
+        keyCaseMap.put("Pizzalar ro'yxati", 1);
+        keyCaseMap.put("Mening profilim", 2);
+        keyCaseMap.put("Telefon raqam biriktirish", 3);
+        keyCaseMap.put("Buyurtma berish", 4);
+        keyCaseMap.put("/start", 0);
         int oldQadam = Integer.valueOf(userData[9]);
-        boolean submit =false;
+        boolean submit = false;
         int step = 0;
 
-        if(keyCaseMap.containsKey(inputText)) {
+        if (keyCaseMap.containsKey(inputText)) {
             step = keyCaseMap.get(inputText);
-            UserQadamUpdate.userQadamUpdate(userId,step);
-        }else{
+            UserQadamUpdate.userQadamUpdate(userId, step);
+        } else {
             step = oldQadam;
             submit = true;
         }
 
         //--------------------------------------------------------------------------
-        switch (step){
+        switch (step) {
             case 1:
-                if(submit == true){
-                    if(IsNumeric.isNumeric(inputText)) {
+                if (submit == true) {
+                    if (IsNumeric.isNumeric(inputText)) {
                         switch (Integer.valueOf(inputText)) {
                             case 1:
                                 sendMessage.setText(PizzaInfo.pizzaInfo("1"));
-                                TempPizzaId.tempPizzaId(userId,"1");
+                                TempPizzaId.tempPizzaId(userId, "1");
                                 row1.add("Buyurtma berish");
                                 break;
                             case 2:
                                 sendMessage.setText(PizzaInfo.pizzaInfo("2"));
-                                TempPizzaId.tempPizzaId(userId,"2");
+                                TempPizzaId.tempPizzaId(userId, "2");
                                 row1.add("Buyurtma berish");
                                 break;
                             case 3:
                                 sendMessage.setText(PizzaInfo.pizzaInfo("3"));
-                                TempPizzaId.tempPizzaId(userId,"3");
+                                TempPizzaId.tempPizzaId(userId, "3");
                                 row1.add("Buyurtma berish");
                                 break;
                             case 4:
                                 sendMessage.setText(PizzaInfo.pizzaInfo("4"));
-                                TempPizzaId.tempPizzaId(userId,"4");
+                                TempPizzaId.tempPizzaId(userId, "4");
                                 row1.add("Buyurtma berish");
                                 break;
                             default:
                                 sendMessage.setText("Pizzani tanlash uchun uni tartib raqami kiritilishi shart!\n" +
                                         PizzaList.pizzaList());
                         }
-                    }else{
+                    } else {
                         sendMessage.setText("Pizzani tanlash uchun uni tartib raqami kiritilishi shart!\n" +
                                 PizzaList.pizzaList());
                     }
-                }else{
+                } else {
                     sendMessage.setText("Pizzani tanlang!\n" +
                             "Tanlash uchun pizzani tartib raqamini kiriting.\n" +
                             PizzaList.pizzaList());
@@ -127,37 +125,37 @@ public class Main  extends TelegramLongPollingBot {
             case 2:
                 sendMessage.setText("Mening profilim\n" +
                         "Ismingiz: " + ismi + "!\n" +
-                        "Balansingiz: "+userData[8]+" so'm\n"+
-                        "Telefon raqamingiz: "+(userData[6].equals("0") ? "kiritilmagan" : userData[6])+"");
+                        "Balansingiz: " + userData[8] + " so'm\n" +
+                        "Telefon raqamingiz: " + (userData[6].equals("0") ? "kiritilmagan" : userData[6]) + "");
                 sendMessage.setChatId(update.getMessage().getChatId());
                 row1.add("Mening buyurtmalarim");
-                if(userData[6].equals("0")){
+                if (userData[6].equals("0")) {
                     row1.add("Telefon raqam biriktirish");
                 }
                 row2.add("Pizzalar ro'yxati");
                 break;
             case 3:
-                if(userData[6].equals("0")){
-                    if(submit == true){
+                if (userData[6].equals("0")) {
+                    if (submit == true) {
 
-                        if(IsPhone.isNumeric(inputText).equals("1")){
-                            String newNumer = "+998"+inputText;
-                            UserPhoneUpdate.userPhoneUpdate(userId,newNumer);
+                        if (IsPhone.isNumeric(inputText).equals("1")) {
+                            String newNumer = "+998" + inputText;
+                            UserPhoneUpdate.userPhoneUpdate(userId, newNumer);
                             sendMessage.setText("Telefon raqamingizni kiritildi!\n" +
                                     "Endi Pizzalarimizni bemalol buyurtma berishingiz mumkin");
-                        }else{
-                            sendMessage.setText(IsPhone.isNumeric(inputText)+"\n" +
+                        } else {
+                            sendMessage.setText(IsPhone.isNumeric(inputText) + "\n" +
                                     "Telefon raqamni qayta kiriting!");
                         }
-                    }else{
+                    } else {
                         sendMessage.setText("Telefon raqamingizni kiritng!\n" +
-                                "Eslatma: +998 yozilmaydi\n"+
+                                "Eslatma: +998 yozilmaydi\n" +
                                 "Masalan: 934448840 ");
                     }
 
-                }else{
+                } else {
                     sendMessage.setText("Siz telefon raqam biriktirgansiz!\n" +
-                            "Telefon raqamingiz: "+userData[6]);
+                            "Telefon raqamingiz: " + userData[6]);
                 }
 
                 sendMessage.setChatId(update.getMessage().getChatId());
@@ -165,46 +163,46 @@ public class Main  extends TelegramLongPollingBot {
                 row2.add("Pizzalar ro'yxati");
                 break;
             case 4:
-                if(userData[10].equals("0")){
+                if (userData[10].equals("0")) {
                     sendMessage.setText("Avval Pizzalar ro'yxatidan Pizza tanlang!");
 
 
-                }else{
-                    if(submit == true){
-                        if(IsNumeric.isNumeric(inputText)) {
-                            if(inputText.equals("0")){
-                                sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10])+"\n" +
+                } else {
+                    if (submit == true) {
+                        if (IsNumeric.isNumeric(inputText)) {
+                            if (inputText.equals("0")) {
+                                sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10]) + "\n" +
                                         "Nechta buyurtma bermoqchisiz? (Masalan: 3 )");
-                            }else{
-                              int chiqim = Integer.valueOf(inputText) * Integer.valueOf(PizzaInfo.pizzaInfoSum(userData[10]));
-                              if(chiqim > Integer.valueOf(userData[8])){
-                                  sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10])+"\n" +
-                                          "Bu Pizzadan " + inputText+" ta sotib olishga pulingiz yetmadi."+
-                                          "Avval hisobingizni to'ldiring!\n ( BIZDA NASIYAGA SAVDO YO'Q HATTO SIZGA HAM :)");
-                              }else{
-                                  // OK buyurtma berish kerak
+                            } else {
+                                int chiqim = Integer.parseInt(inputText) * Integer.parseInt(PizzaInfo.pizzaInfoSum(userData[10]));
+                                if (chiqim > Integer.parseInt(userData[8])) {
+                                    sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10]) + "\n" +
+                                            "Bu Pizzadan " + inputText + " ta sotib olishga pulingiz yetmadi." +
+                                            "Avval hisobingizni to'ldiring!\n ( BIZDA NASIYAGA SAVDO YO'Q HATTO SIZGA HAM :)");
+                                } else {
+                                    sendMessage.setText("Sizning buyurtmangiz qabul qilindi!" +
+                                            "\nBuyurtmangiz " + PizzaInfo.pizzaInfoName(userData[10]));
+                                    sendMessage.setChatId(update.getMessage().getChatId());
+                                    System.out.println("Buyurtma qabul qilindi");
+                                    // OK buyurtma berish kerak
 
-
-                              }
+                                }
                             }
-                        }else{
-                            sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10])+"\n" +
+                        } else {
+                            sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10]) + "\n" +
                                     "Nechta buyurtma bermoqchisiz? (Masalan: 2 )");
                         }
-
-                    }else{
-                        sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10])+"\n" +
+                    } else {
+                        sendMessage.setText(PizzaInfo.pizzaInfoName(userData[10]) + "\n" +
                                 "Nechta buyurtma bermoqchisiz?");
                     }
-
-
                 }
                 sendMessage.setChatId(update.getMessage().getChatId());
                 row1.add("Mening profilim");
                 row2.add("Pizzalar ro'yxati");
                 break;
             default:
-                if(inputText.equals("/start")) {
+                if (inputText.equals("/start")) {
                     sendMessage.setText("Assalomu Alaykum " + ismi + "!\n\"ABBALI PIZZA\"ga hush kelibsiz!\n" +
                             "Mazali Pizzalarimizga online buyurtma bering!");
                     sendMessage.setChatId(update.getMessage().getChatId());
@@ -213,15 +211,12 @@ public class Main  extends TelegramLongPollingBot {
                 }
         }
 
-
         //---------------------------------------------------------------------------
         keyboardRows.add(row1);
         keyboardRows.add(row2);
-
         keyboardMarkup.setKeyboard(keyboardRows);
 
-
-        try{
+        try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
